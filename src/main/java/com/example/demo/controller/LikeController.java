@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.dto.request.LikeDTO;
 import com.example.demo.dto.response.ResponMessage;
 import com.example.demo.model.Like;
-import com.example.demo.model.Story;
 import com.example.demo.model.User;
 import com.example.demo.security.userprincal.UserDetailService;
 import com.example.demo.service.like.ILikeService;

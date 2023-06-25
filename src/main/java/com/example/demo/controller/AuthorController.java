@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.response.ResponMessage;
 import com.example.demo.model.Author;
-import com.example.demo.model.Category;
 import com.example.demo.model.User;
 import com.example.demo.security.userprincal.UserDetailService;
 import com.example.demo.service.author.IAuthorService;

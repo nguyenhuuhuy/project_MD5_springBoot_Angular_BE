@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.request.ChapterDTO;
 import com.example.demo.dto.request.ChapterImageDTO;
 import com.example.demo.dto.response.ResponMessage;
 import com.example.demo.model.ChapterImage;
