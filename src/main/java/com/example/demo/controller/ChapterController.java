@@ -80,10 +80,13 @@ public class ChapterController {
         Chapter chapter = new Chapter(chapterDTO.getName(), chapterDTO.getStory());
         if (chapterService.existsByName(chapter.getName())) {
             return new ResponseEntity<>(new ResponMessage("name_existed"), HttpStatus.OK);
-        } else {
+        }
+        if (chapter.getStory() == null){
+            return new ResponseEntity<>(new ResponMessage("not_found_story"),HttpStatus.OK);
+        }
             chapterService.save(chapter);
             return new ResponseEntity<>(new ResponMessage("create_success"), HttpStatus.OK);
-        }
+
     }
 
     @PutMapping("/{id}")
