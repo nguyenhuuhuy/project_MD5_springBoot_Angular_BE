@@ -33,7 +33,7 @@ public class Chapter {
     private Story story;
 
     private Long chapterView = 0L;
-    @Column(columnDefinition = "datetime default (now())")
+//    @Column(columnDefinition = "datetime default (now())")
     private Date date = new Date();
     @OneToMany
     @JoinColumn(name = "chapter_id")

@@ -25,9 +25,9 @@ public class Comment {
     @JoinColumn(name = "story_id")
     private Story story;
     private String comment;
-    @Column(columnDefinition = "bit default(0)")
+//    @Column(columnDefinition = "bit default(0)")
     private Boolean status = false;
-    @Column(columnDefinition = "datetime default (now())")
+//    @Column(columnDefinition = "datetime default (now())")
     private Date date = new Date();
 
     public Comment(Story story, String comment) {

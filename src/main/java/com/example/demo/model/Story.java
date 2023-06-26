@@ -38,7 +38,7 @@ public class Story {
 
     @ManyToOne
     private User creator;
-    @Column(columnDefinition = "datetime default (now())")
+//    @Column(columnDefinition = "datetime default (now())")
     private Date date = new Date();
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "story_category",

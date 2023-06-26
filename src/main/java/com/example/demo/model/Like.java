@@ -28,7 +28,7 @@ public class Like {
     private Story storyRelate;
     @Transient
     private Story story;
-    @Column(columnDefinition = "datetime default (now())")
+//    @Column(columnDefinition = "datetime default (now())")
     private Date date = new Date();
 
     public Like(Story story) {
