@@ -28,7 +28,6 @@ public class Chapter {
     private String name;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "story_id")
     private Story story;
 
