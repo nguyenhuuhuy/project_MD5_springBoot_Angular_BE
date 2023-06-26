@@ -22,21 +22,20 @@ public class Story {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NonNull
     @NotBlank
     @Column(nullable = false, length = 30)
     private String name;       // ten
-    @NonNull
+
     @Lob
     private String image;           // anh
     @Column(columnDefinition = "bit default(0)")
     private Boolean status = false;
     @Column(nullable = false, length = 100)
     private String content;                 // mieu ta
-    @NonNull
+
     @ManyToOne
     private Author author;
-    @NonNull
+
     @ManyToOne
     private User creator;
     @Column(columnDefinition = "datetime default (now())")

@@ -22,7 +22,7 @@ public class Chapter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NonNull
+
     @NotBlank
     @Column(nullable = false,length = 30)
     private String name;

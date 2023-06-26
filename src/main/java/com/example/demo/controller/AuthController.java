@@ -51,6 +51,18 @@ public class AuthController {
     @Autowired
     private UserDetailService userDetailService;
 
+    @GetMapping("/user")
+    public ResponseEntity<?> getListUser(){
+        return new ResponseEntity<>(userService.findAll(),HttpStatus.OK);
+    }
+    @GetMapping("/detail-user/{id}")
+    public ResponseEntity<?> detailUserById(@PathVariable Long id){
+        Optional<User> user = userService.findByUserId(id);
+        if (!user.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(user,HttpStatus.OK);
+    }
     @PostMapping("/signup")
     public ResponseEntity<?> register(@Valid @RequestBody SignUpForm signUpForm){
         if(userService.existsByUsername(signUpForm.getUsername())){
@@ -89,6 +101,11 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(signInForm.getUsername(), signInForm.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtProvider.createToken(authentication);
+        String username = jwtProvider.getUerNameFromToken(token);
+        User user = userService.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("user name not fond"));
+        if (user.getStatus()){
+            return new ResponseEntity<>(new ResponMessage("login_denied"),HttpStatus.OK);
+        }
         UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
         return ResponseEntity.ok(new JwtResponse(token, userPrinciple.getName(),userPrinciple.getAvatar(), userPrinciple.getAuthorities()));
     }

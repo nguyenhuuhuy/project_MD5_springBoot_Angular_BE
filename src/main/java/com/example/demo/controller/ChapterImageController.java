@@ -74,4 +74,19 @@ public class ChapterImageController {
         chapterImageRepository.save(chapterImage.get());
         return new ResponseEntity<>(new ResponMessage("update_success"),HttpStatus.OK);
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteChapterImageById(@PathVariable Long id){
+        String role = "";
+        User user = userDetailService.getCurrentUser();
+        role = userService.getUserRole(user);
+        if (!role.equals("ADMIN")){
+            return new ResponseEntity<>(new ResponMessage("access_denied"),HttpStatus.OK);
+        }
+        Optional<ChapterImage> chapterImage = chapterImageRepository.findById(id);
+        if (!chapterImage.isPresent()){
+            return new ResponseEntity<>(new ResponMessage("not_found"),HttpStatus.OK);
+        }
+        chapterImageRepository.delete(chapterImage.get());
+        return new ResponseEntity<>(new ResponMessage("delete_success"),HttpStatus.OK);
+    }
 }

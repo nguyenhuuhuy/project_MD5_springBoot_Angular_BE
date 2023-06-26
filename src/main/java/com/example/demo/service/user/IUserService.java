@@ -2,6 +2,7 @@ package com.example.demo.service.user;
 
 import com.example.demo.model.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface IUserService {
@@ -11,4 +12,6 @@ public interface IUserService {
     User save(User user);
     String getUserRole(User user);
     Optional<User> findByUserId(Long id);
+    List<User> findAll();
+
 }
