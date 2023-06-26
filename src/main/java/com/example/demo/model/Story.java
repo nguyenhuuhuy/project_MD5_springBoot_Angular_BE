@@ -28,7 +28,7 @@ public class Story {
 
     @Lob
     private String image;           // anh
-    @Column(columnDefinition = "bit default(0)")
+//    @Column(columnDefinition = "bit default(0)")
     private Boolean status = false;
     @Column(nullable = false, length = 100)
     private String content;                 // mieu ta
