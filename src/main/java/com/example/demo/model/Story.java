@@ -22,15 +22,14 @@ public class Story {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank
-    @Column(nullable = false, length = 30)
+
     private String name;       // ten
 
     @Lob
     private String image;           // anh
 //    @Column(columnDefinition = "bit default(0)")
     private Boolean status = false;
-    @Column(nullable = false, length = 100)
+
     private String content;                 // mieu ta
 
     @ManyToOne
