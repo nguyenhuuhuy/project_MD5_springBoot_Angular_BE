@@ -54,7 +54,7 @@ public class Story {
     private List<Like> likeList = new ArrayList<>();
     private Long totalView = 0L;
 
-    public Story(@NonNull String name, @NonNull String image, String content, @NonNull Author author,List<Category> categoryList) {
+    public Story( String name,  String image, String content,  Author author,List<Category> categoryList) {
         this.name = name;
         this.image = image;
         this.content = content;
