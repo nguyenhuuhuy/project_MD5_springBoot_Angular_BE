@@ -34,11 +34,8 @@ public class Chapter {
     private Long chapterView = 0L;
 //    @Column(columnDefinition = "datetime default (now())")
     private Date date = new Date();
-    @OneToMany
-    @JoinColumn(name = "chapter_id")
-    List<ChapterImage> chapterImageList = new ArrayList<>();
 
-    public Chapter(@NonNull String name, Story story) {
+    public Chapter( String name, Story story) {
         this.name = name;
         this.story = story;
     }
