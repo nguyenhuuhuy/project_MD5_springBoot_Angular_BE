@@ -9,7 +9,10 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "likes",uniqueConstraints = @UniqueConstraint(columnNames = {"story_id","user_id"}))
+@Table(name = "likes"
+//        ,uniqueConstraints = @UniqueConstraint(columnNames = {"story_id","user_id"})
+
+)
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
