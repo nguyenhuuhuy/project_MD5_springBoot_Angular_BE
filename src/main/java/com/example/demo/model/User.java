@@ -12,14 +12,14 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users"
-//        , uniqueConstraints = {
-//        @UniqueConstraint(columnNames = {
-//                "username"
-//        }),
-//        @UniqueConstraint(columnNames = {
-//                "email"
-//        })
-//}
+        , uniqueConstraints = {
+        @UniqueConstraint(columnNames = {
+                "username"
+        }),
+        @UniqueConstraint(columnNames = {
+                "email"
+        })
+}
 )
 public class User {
     @Id
