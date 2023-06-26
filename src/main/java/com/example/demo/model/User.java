@@ -40,7 +40,7 @@ public class User {
     @NotBlank
     @Size(min = 6, max = 100)
     private String password;
-    @Column(columnDefinition = "bit default (0)")
+//    @Column(columnDefinition = "bit default (0)")
     private Boolean status = false;
     @Lob
     private String avatar = "https://firebasestorage.googleapis.com/v0/b/dongchinh.appspot.com/o/images%2FAnh-avatar-dep-chat-lam-hinh-dai-dien.jpg?alt=media&token=57513398-4be7-4ce1-9ab0-381e0281a67a&_gl=1*3ym3xo*_ga*MTczODQ1MjQ5Ni4xNjg2NjAxNTI3*_ga_CW55HF8NVT*MTY4NjYzMTIzNS4yLjEuMTY4NjYzMTI4Ni4wLjAuMA..";
@@ -136,17 +136,17 @@ public class User {
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", status=" + status +
-                ", avatar='" + avatar + '\'' +
-                ", roles=" + roles +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "User{" +
+//                "id=" + id +
+//                ", name='" + name + '\'' +
+//                ", username='" + username + '\'' +
+//                ", email='" + email + '\'' +
+//                ", password='" + password + '\'' +
+//                ", status=" + status +
+//                ", avatar='" + avatar + '\'' +
+//                ", roles=" + roles +
+//                '}';
+//    }
 }
