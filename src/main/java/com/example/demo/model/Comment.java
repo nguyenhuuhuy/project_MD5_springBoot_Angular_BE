@@ -19,8 +19,9 @@ public class Comment {
     private Long id;
     @ManyToOne
     private User user;
-    @JsonIgnore
+
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "story_id")
     private Story story;
     private String comment;

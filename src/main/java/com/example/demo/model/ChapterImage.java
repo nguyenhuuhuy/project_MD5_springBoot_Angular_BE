@@ -20,8 +20,9 @@ public class ChapterImage {
     private Long id;
     @Lob
     private String image;
-    @JsonIgnore
+
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "chapter_id")
     private Chapter chapter;
 

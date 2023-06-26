@@ -18,7 +18,6 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NonNull
     @Column(unique = true)
     private String name;
     @Lob

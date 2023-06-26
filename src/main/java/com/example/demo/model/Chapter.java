@@ -26,8 +26,9 @@ public class Chapter {
     @NotBlank
     @Column(nullable = false,length = 30)
     private String name;
-    @JsonIgnore
+
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "story_id")
     private Story story;
 
