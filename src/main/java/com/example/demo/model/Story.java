@@ -43,15 +43,15 @@ public class Story {
     @JoinTable(name = "story_category",
             joinColumns = @JoinColumn(name = "story_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categoryList = new ArrayList<>();
-    @OneToMany
-    @JoinColumn(name = "story_id")
-    private List<Chapter> chapterList = new ArrayList<>();
-    @OneToMany
-    @JoinColumn(name = "story_id")
-    private List<Comment> commentList = new ArrayList<>();
-    @OneToMany
-    @JoinColumn(name = "story_id")
-    private List<Like> likeList = new ArrayList<>();
+//    @OneToMany
+//    @JoinColumn(name = "story_id")
+//    private List<Chapter> chapterList = new ArrayList<>();
+//    @OneToMany
+//    @JoinColumn(name = "story_id")
+//    private List<Comment> commentList = new ArrayList<>();
+//    @OneToMany
+//    @JoinColumn(name = "story_id")
+//    private List<Like> likeList = new ArrayList<>();
     private Long totalView = 0L;
 
     public Story(@NonNull String name, @NonNull String image, String content, @NonNull Author author,List<Category> categoryList) {
