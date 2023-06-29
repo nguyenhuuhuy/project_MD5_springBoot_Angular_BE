@@ -58,4 +58,9 @@ public class AuthorServiceIMPL implements IAuthorService {
         return authorRepository.existsByName(name);
     }
 
+    @Override
+    public List<Author> findByNameContaining(String name) {
+        return authorRepository.findByNameContaining(name);
+    }
+
 }

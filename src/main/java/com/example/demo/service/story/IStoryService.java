@@ -17,6 +17,7 @@ public interface IStoryService extends IGenderService<Story> {
 
     Set<Story> storyList();
     List<Story> findStoryByCategoryId(@Param("id")Long id);
+    List<Story> findByNameContaining(String name);
 
 
 }

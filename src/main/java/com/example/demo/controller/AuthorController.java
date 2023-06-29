@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.response.ResponMessage;
 import com.example.demo.model.Author;
+import com.example.demo.model.Story;
 import com.example.demo.model.User;
 import com.example.demo.security.userprincal.UserDetailService;
 import com.example.demo.service.author.IAuthorService;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -50,6 +52,9 @@ public class AuthorController {
         String role = "";
         User user = userDetailService.getCurrentUser();
         role = userService.getUserRole(user);
+        if (user.getId() == null){
+            return new ResponseEntity<>(new ResponMessage("no_user"),HttpStatus.OK);
+        }
         if (!role.equals("ADMIN")){
             return new ResponseEntity<>(new ResponMessage("access_denied"),HttpStatus.OK);
         }
@@ -65,6 +70,9 @@ public class AuthorController {
         String role = "";
         User user = userDetailService.getCurrentUser();
         role = userService.getUserRole(user);
+        if (user.getId() == null){
+            return new ResponseEntity<>(new ResponMessage("no_user"),HttpStatus.OK);
+        }
         if (!role.equals("ADMIN")){
             return new ResponseEntity<>(new ResponMessage("access_denied"),HttpStatus.OK);
         }
@@ -95,6 +103,9 @@ public class AuthorController {
         String role = "";
         User user = userDetailService.getCurrentUser();
         role = userService.getUserRole(user);
+        if (user.getId() == null){
+            return new ResponseEntity<>(new ResponMessage("no_user"),HttpStatus.OK);
+        }
         if (!role.equals("ADMIN")){
             return new ResponseEntity<>(new ResponMessage("access_denied"),HttpStatus.OK);
         }
@@ -104,5 +115,13 @@ public class AuthorController {
         }
         authorService.deleteById(id);
         return new ResponseEntity<>(new ResponMessage("delete_success"),HttpStatus.OK);
+    }
+    @GetMapping("/search/{search}")
+    public ResponseEntity<?> getListSearchBandByName(@PathVariable String search){
+        List<Author> authorList = authorService.findByNameContaining(search);
+        if (authorList.isEmpty()){
+            return new ResponseEntity<>(new ResponMessage("not_found"),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(authorList,HttpStatus.OK);
     }
 }

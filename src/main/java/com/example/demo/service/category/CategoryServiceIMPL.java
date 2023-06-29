@@ -53,6 +53,11 @@ public class CategoryServiceIMPL implements ICategoryService {
     }
 
     @Override
+    public List<Category> findByNameContaining(String name) {
+        return categoryRepository.findByNameContaining(name);
+    }
+
+    @Override
     public void deleteById(Long id) {
         categoryRepository.deleteById(id);
     }

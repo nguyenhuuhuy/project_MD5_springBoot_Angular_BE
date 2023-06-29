@@ -127,6 +127,12 @@ public class StoryController {
 
     @GetMapping ("block-story/{id}")
     public ResponseEntity<?> blockStory(@PathVariable Long id){
+        String role = "";
+        User user = userDetailService.getCurrentUser();
+        role = userService.getUserRole(user);
+        if (!role.equals("ADMIN")){
+            return new ResponseEntity<>(new ResponMessage("access_denied"),HttpStatus.OK);
+        }
         Optional<Story> story = storyService.findById(id);
         if (!story.isPresent()){
             return new ResponseEntity<>(new ResponMessage("no_found"),HttpStatus.OK);
@@ -141,4 +147,12 @@ public class StoryController {
         return new ResponseEntity<>(new ResponMessage("block_success"),HttpStatus.OK);
     }
 
+    @GetMapping("/search/{search}")
+    public ResponseEntity<?> getListSearchBandByName(@PathVariable String search){
+        List<Story> story = storyService.findByNameContaining(search);
+        if (story.isEmpty()){
+            return new ResponseEntity<>(new ResponMessage("not_found"),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(story,HttpStatus.OK);
+    }
 }

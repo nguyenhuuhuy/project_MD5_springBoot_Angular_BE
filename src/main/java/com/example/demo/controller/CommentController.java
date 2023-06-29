@@ -51,6 +51,9 @@ public class CommentController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteComment(@PathVariable Long id){
         User user = userDetailService.getCurrentUser();
+        if (user.getId() == null){
+            return new ResponseEntity<>(new ResponMessage("no_user"),HttpStatus.OK);
+        }
         Optional<Comment> comment = commentService.findById(id);
         if (!comment.isPresent()){
             return new ResponseEntity<>(new ResponMessage("not_found"),HttpStatus.OK);
@@ -60,5 +63,25 @@ public class CommentController {
         }
             commentService.deleteById(id);
             return new ResponseEntity<>(new ResponMessage("delete_success"),HttpStatus.OK);
+    }
+
+    @DeleteMapping("/admin/{id}")
+    public ResponseEntity<?> deleteAdminComment(@PathVariable Long id){
+        String role = "";
+        User user = userDetailService.getCurrentUser();
+        role = userService.getUserRole(user);
+        if (user.getId() == null){
+            return new ResponseEntity<>(new ResponMessage("no_user"),HttpStatus.OK);
+        }
+        if (!role.equals("ADMIN")){
+            return new ResponseEntity<>(new ResponMessage("access_denied"),HttpStatus.OK);
+        }
+
+        Optional<Comment> comment = commentService.findById(id);
+        if (!comment.isPresent()){
+            return new ResponseEntity<>(new ResponMessage("not_found"),HttpStatus.OK);
+        }
+        commentService.deleteById(id);
+        return new ResponseEntity<>(new ResponMessage("delete_success"),HttpStatus.OK);
     }
 }

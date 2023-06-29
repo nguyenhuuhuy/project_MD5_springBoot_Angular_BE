@@ -2,10 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.request.LikeDTO;
 import com.example.demo.dto.response.ResponMessage;
+import com.example.demo.model.Comment;
 import com.example.demo.model.Like;
 import com.example.demo.model.User;
 import com.example.demo.security.userprincal.UserDetailService;
 import com.example.demo.service.like.ILikeService;
+import com.example.demo.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,8 @@ public class LikeController {
     private ILikeService likeService;
     @Autowired
     private UserDetailService userDetailService;
+    @Autowired
+    private IUserService userService;
     @GetMapping
     public ResponseEntity<?> listLikes(){
         return new ResponseEntity<>(likeService.findAll(),HttpStatus.OK);
@@ -46,5 +50,25 @@ public class LikeController {
         }
         likeService.save(like);
         return new ResponseEntity<>(new ResponMessage("like_success"), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteAdminComment(@PathVariable Long id){
+        String role = "";
+        User user = userDetailService.getCurrentUser();
+        role = userService.getUserRole(user);
+        if (user.getId() == null){
+            return new ResponseEntity<>(new ResponMessage("no_user"),HttpStatus.OK);
+        }
+        if (!role.equals("ADMIN")){
+            return new ResponseEntity<>(new ResponMessage("access_denied"),HttpStatus.OK);
+        }
+
+        Optional<Like> like = likeService.findById(id);
+        if (!like.isPresent()){
+            return new ResponseEntity<>(new ResponMessage("not_found"),HttpStatus.OK);
+        }
+        likeService.deleteById(id);
+        return new ResponseEntity<>(new ResponMessage("delete_success"),HttpStatus.OK);
     }
 }

@@ -46,7 +46,6 @@ public class ChapterController {
 
     @GetMapping("/detail/{id}")
     public ResponseEntity<?> detailChapter(@PathVariable Long id) {
-
         Optional<Chapter> chapter = chapterService.findById(id);
         if (!chapter.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -73,6 +72,9 @@ public class ChapterController {
         String role = "";
         User user = userDetailService.getCurrentUser();
         role = userService.getUserRole(user);
+        if (user.getId() == null){
+            return new ResponseEntity<>(new ResponMessage("no_user"),HttpStatus.OK);
+        }
         if (!role.equals("ADMIN")) {
             return new ResponseEntity<>(new ResponMessage("access_denied"), HttpStatus.OK);
         }
@@ -93,6 +95,9 @@ public class ChapterController {
         String role = "";
         User user = userDetailService.getCurrentUser();
         role = userService.getUserRole(user);
+        if (user.getId() == null){
+            return new ResponseEntity<>(new ResponMessage("no_user"),HttpStatus.OK);
+        }
         if (!role.equals("ADMIN")) {
             return new ResponseEntity<>(new ResponMessage("access_denied"), HttpStatus.OK);
         }
@@ -115,6 +120,9 @@ public class ChapterController {
         String role = "";
         User user = userDetailService.getCurrentUser();
         role = userService.getUserRole(user);
+        if (user.getId() == null){
+            return new ResponseEntity<>(new ResponMessage("no_user"),HttpStatus.OK);
+        }
         if (!role.equals("ADMIN")) {
             return new ResponseEntity<>(new ResponMessage("access_denied"), HttpStatus.OK);
         }
@@ -126,7 +134,7 @@ public class ChapterController {
         return new ResponseEntity<>(new ResponMessage("delete_success"), HttpStatus.OK);
     }
 
-    @GetMapping("/storyByChapter/{id}")
+    @GetMapping("/storyByChapter/{id}")          //lay thong tin story de render ra chapterImage
     public ResponseEntity<?> storyFindByChapter(@PathVariable Long id) {
         Optional<Story> story = chapterService.findStoryByChapterId(id);
         return new ResponseEntity<>(story, HttpStatus.OK);
@@ -137,6 +145,9 @@ public class ChapterController {
         String role = "";
         User user = userDetailService.getCurrentUser();
         role = userService.getUserRole(user);
+        if (user.getId() == null){
+            return new ResponseEntity<>(new ResponMessage("no_user"),HttpStatus.OK);
+        }
         if (!role.equals("ADMIN")) {
             return new ResponseEntity<>(new ResponMessage("access_denied"), HttpStatus.OK);
         }

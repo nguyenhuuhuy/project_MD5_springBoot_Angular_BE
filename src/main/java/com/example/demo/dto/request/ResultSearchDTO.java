@@ -1,24 +1,19 @@
 package com.example.demo.dto.request;
 
-import com.example.demo.model.ChapterImage;
+import com.example.demo.model.Author;
+import com.example.demo.model.Category;
 import com.example.demo.model.Story;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
-import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
 import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChapterDTO {
-
-
-    private String name;
-
-    private Story story;
+public class ResultSearchDTO {
+   private List<Author> authorList;
+   private List<Category> categoryList;
+   private List<Story> storyList;
 
 }

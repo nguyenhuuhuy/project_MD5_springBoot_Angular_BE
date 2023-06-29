@@ -11,4 +11,6 @@ public interface ICategoryService extends IGenderService<Category> {
     Optional<Category> findByName(String name);
 
     boolean existsByName(String name);
+    List<Category> findByNameContaining(String name);
+
 }

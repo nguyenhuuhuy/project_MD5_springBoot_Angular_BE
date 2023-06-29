@@ -89,7 +89,10 @@ public class StoryServiceIMPL implements IStoryService {
         return storyRepository.findStoryByCategoryId(id);
     }
 
-
+    @Override
+    public List<Story> findByNameContaining(String name) {
+        return storyRepository.findByNameContaining(name);
+    }
 
 
 }

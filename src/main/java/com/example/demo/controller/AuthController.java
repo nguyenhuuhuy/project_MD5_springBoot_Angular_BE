@@ -1,19 +1,17 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.request.ChangerAvatar;
-import com.example.demo.dto.request.SignInForm;
-import com.example.demo.dto.request.SignUpForm;
-import com.example.demo.dto.request.UpdateUser;
+import com.example.demo.dto.request.*;
 import com.example.demo.dto.response.JwtResponse;
 import com.example.demo.dto.response.ResponMessage;
-import com.example.demo.model.Role;
-import com.example.demo.model.RoleName;
-import com.example.demo.model.User;
+import com.example.demo.model.*;
 import com.example.demo.security.jwt.JwtProvider;
 import com.example.demo.security.jwt.JwtTokenFilter;
 import com.example.demo.security.userprincal.UserDetailService;
 import com.example.demo.security.userprincal.UserPrinciple;
+import com.example.demo.service.author.IAuthorService;
+import com.example.demo.service.category.ICategoryService;
 import com.example.demo.service.role.RoleServiceImpl;
+import com.example.demo.service.story.IStoryService;
 import com.example.demo.service.user.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -50,6 +49,12 @@ public class AuthController {
     JwtTokenFilter jwtTokenFilter;
     @Autowired
     private UserDetailService userDetailService;
+    @Autowired
+    private IAuthorService authorService;
+    @Autowired
+    private ICategoryService categoryService;
+    @Autowired
+    private IStoryService storyService;
 
     @GetMapping("/user")
     public ResponseEntity<?> getListUser(){
@@ -157,6 +162,9 @@ public class AuthController {
             if (!role.equals("ADMIN")) {
                 return new ResponseEntity<>(new ResponMessage("access_denied"), HttpStatus.OK);
             } else {
+                if (userService.getUserRole(user.get()).equals("ADMIN")){
+                    return new ResponseEntity<>(new ResponMessage("admin_no_change"),HttpStatus.OK);
+                }
                 if (userService.getUserRole(user.get()).equals("USER")) {
                     Role pmRole = roleService.findByName(RoleName.PM).orElseThrow(() -> new RuntimeException("Role not found"));
                     roles.add(pmRole);
@@ -175,10 +183,18 @@ public class AuthController {
     @PutMapping("/update-user")
     public ResponseEntity<?> updateUser(HttpServletRequest request, @Valid @RequestBody UpdateUser updateUser){
         String token = jwtTokenFilter.getJwt(request);
+        if (token == null){
+            return new ResponseEntity<>(new ResponMessage("no_user"),HttpStatus.OK);
+        }
         String username = jwtProvider.getUerNameFromToken(token);
         User user = userService.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("user name not fond"));
         if (user.getStatus()){
             return new ResponseEntity<>(new ResponMessage("access_denied"),HttpStatus.OK);
+        }
+        String role = "";
+        role = userService.getUserRole(user);
+        if (role.equals("ADMIN")){
+            return new ResponseEntity<>(new ResponMessage("admin_no_update"),HttpStatus.OK);
         }
         if (updateUser.getAvatar() == null || updateUser.getAvatar().trim().equals("")){
             return new ResponseEntity<>(new ResponMessage("avatar_failed"),HttpStatus.OK);
@@ -190,5 +206,23 @@ public class AuthController {
             return new ResponseEntity<>(new ResponMessage("update_success"),HttpStatus.OK);
         }
 
+    }
+
+    @GetMapping("/search/{search}")
+    public ResponseEntity<?> searchAll(@PathVariable String search){
+        List<Author> authorList = authorService.findByNameContaining(search);
+        List<Category> categoryList = categoryService.findByNameContaining(search);
+        List<Story> storyList = storyService.findByNameContaining(search);
+        ResultSearchDTO resultSearchDTO = new ResultSearchDTO();
+        if (!authorList.isEmpty()){
+            resultSearchDTO.setAuthorList(authorList);
+        }
+        if (!categoryList.isEmpty()){
+            resultSearchDTO.setCategoryList(categoryList);
+        }
+        if (!storyList.isEmpty()){
+            resultSearchDTO.setStoryList(storyList);
+        }
+        return new ResponseEntity<>(resultSearchDTO,HttpStatus.OK);
     }
 }

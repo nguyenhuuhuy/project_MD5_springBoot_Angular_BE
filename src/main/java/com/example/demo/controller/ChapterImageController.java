@@ -51,6 +51,9 @@ public class ChapterImageController {
         String role = "";
         User user = userDetailService.getCurrentUser();
         role = userService.getUserRole(user);
+        if (user.getId() == null){
+            return new ResponseEntity<>(new ResponMessage("no_user"),HttpStatus.OK);
+        }
         if (!role.equals("ADMIN")){
             return new ResponseEntity<>(new ResponMessage("access_denied"),HttpStatus.OK);
         }
@@ -63,6 +66,9 @@ public class ChapterImageController {
         String role = "";
         User user = userDetailService.getCurrentUser();
         role = userService.getUserRole(user);
+        if (user.getId() == null){
+            return new ResponseEntity<>(new ResponMessage("no_user"),HttpStatus.OK);
+        }
         if (!role.equals("ADMIN")){
             return new ResponseEntity<>(new ResponMessage("access_denied"),HttpStatus.OK);
         }
@@ -79,6 +85,9 @@ public class ChapterImageController {
         String role = "";
         User user = userDetailService.getCurrentUser();
         role = userService.getUserRole(user);
+        if (user.getId() == null){
+            return new ResponseEntity<>(new ResponMessage("no_user"),HttpStatus.OK);
+        }
         if (!role.equals("ADMIN")){
             return new ResponseEntity<>(new ResponMessage("access_denied"),HttpStatus.OK);
         }
