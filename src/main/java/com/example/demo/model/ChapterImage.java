@@ -22,7 +22,7 @@ public class ChapterImage {
     private String image;
 
     @ManyToOne
-    @JsonIgnore
+//    @JsonIgnore
     @JoinColumn(name = "chapter_id")
     private Chapter chapter;
 
