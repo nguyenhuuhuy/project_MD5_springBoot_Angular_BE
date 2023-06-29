@@ -46,7 +46,12 @@ public class LikeServiceIMPL implements ILikeService {
 
 
     @Override
-    public boolean existsByStoryRelateIdAndUserId(Long s_id, Long u_id) {
-        return likeRepository.existsByStoryRelateIdAndUserId(s_id,u_id);
+    public boolean existsByStoryIdAndUserId(Long s_id, Long u_id) {
+        return likeRepository.existsByStoryIdAndUserId(s_id,u_id);
+    }
+
+    @Override
+    public List<Like> getLikeByStoryId(Long id) {
+        return likeRepository.getLikeByStoryId(id);
     }
 }

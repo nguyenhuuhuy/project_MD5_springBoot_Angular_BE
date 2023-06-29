@@ -22,12 +22,11 @@ public class Like {
     private Long id;
     @ManyToOne
     private User user;
-    @JsonIgnore
+
     @ManyToOne
     @JoinColumn(name = "story_id")
-    private Story storyRelate;
-    @Transient
     private Story story;
+
     private Date date = new Date();
 
     public Like(Story story) {

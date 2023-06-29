@@ -38,13 +38,16 @@ public class LikeController {
         }
         return new ResponseEntity<>(like,HttpStatus.OK);
     }
+    @GetMapping("/likeByStory/{id}")
+    public ResponseEntity<?> listLikeByStory(@PathVariable Long id){
+        return new ResponseEntity<>(likeService.getLikeByStoryId(id),HttpStatus.OK);
+    }
     @PostMapping
     public ResponseEntity<?> createLike(@RequestBody LikeDTO likeDTO) {
         Like like = new Like(likeDTO.getStory());
         User user = userDetailService.getCurrentUser();
         like.setUser(user);
-        like.setStoryRelate(like.getStory());
-        Boolean checkLike = likeService.existsByStoryRelateIdAndUserId(like.getStory().getId(),like.getUser().getId());
+        Boolean checkLike = likeService.existsByStoryIdAndUserId(like.getStory().getId(),like.getUser().getId());
         if (checkLike){
             return new ResponseEntity<>(new ResponMessage("dame"),HttpStatus.OK);
         }
