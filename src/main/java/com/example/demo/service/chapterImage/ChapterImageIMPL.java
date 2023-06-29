@@ -40,4 +40,9 @@ public class ChapterImageIMPL implements IChapterImageService{
     public void deleteById(Long id) {
         chapterImageRepository.deleteById(id);
     }
+
+    @Override
+    public List<ChapterImage> getChapterImageByChapterId(Long id) {
+        return chapterImageRepository.getChapterImageByChapterId(id);
+    }
 }

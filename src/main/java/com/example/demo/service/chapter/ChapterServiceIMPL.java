@@ -50,4 +50,11 @@ public class ChapterServiceIMPL implements IChapterService{
     public Optional<Story> findStoryByChapterId(Long id) {
         return chapterRepository.findStoryByChapterId(id);
     }
+
+    @Override
+    public List<Chapter> getChaptersByStoryId(Long id) {
+        return chapterRepository.getChaptersByStoryId(id);
+    }
+
+
 }

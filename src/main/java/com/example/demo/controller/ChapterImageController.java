@@ -31,6 +31,10 @@ public class ChapterImageController {
     public ResponseEntity<?> showListChapterImage() {
         return new ResponseEntity<>(chapterImageRepository.findAll(), HttpStatus.OK);
     }
+    @GetMapping("/getChapterByChapterImage/{id}")
+    public ResponseEntity<?> showListChapterImage(@PathVariable Long id){
+        return new ResponseEntity<>(chapterImageRepository.getChapterImageByChapterId(id),HttpStatus.OK);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> detailChapterImage(@PathVariable Long id) {

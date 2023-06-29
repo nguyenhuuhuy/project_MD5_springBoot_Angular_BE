@@ -38,7 +38,10 @@ public class ChapterController {
     public ResponseEntity<?> showListChapter() {
         return new ResponseEntity<>(chapterService.findAll(), HttpStatus.OK);
     }
-
+    @GetMapping("/chapterByStory/{id}")
+    public ResponseEntity<?> showListChapterByStory(@PathVariable Long id){
+        return new ResponseEntity<>(chapterService.getChaptersByStoryId(id),HttpStatus.OK);
+    }
     @GetMapping("/page")
     public ResponseEntity<?> pageListChapter(@PageableDefault(size = 5) Pageable pageable) {
         return new ResponseEntity<>(chapterService.findAll(pageable), HttpStatus.OK);
