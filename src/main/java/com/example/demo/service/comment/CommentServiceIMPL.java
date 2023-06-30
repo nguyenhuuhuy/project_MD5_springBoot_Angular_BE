@@ -45,4 +45,9 @@ public class CommentServiceIMPL implements ICommentService {
     public void deleteById(Long id) {
         commentRepository.deleteById(id);
     }
+
+    @Override
+    public List<Comment> getCommentByStoryId(Long id) {
+        return commentRepository.getCommentByStoryId(id);
+    }
 }

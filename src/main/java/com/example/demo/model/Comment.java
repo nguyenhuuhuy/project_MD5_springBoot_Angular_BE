@@ -21,7 +21,6 @@ public class Comment {
     private User user;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "story_id")
     private Story story;
     private String comment;

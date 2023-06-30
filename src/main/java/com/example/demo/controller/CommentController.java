@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/comment")
@@ -26,62 +26,74 @@ public class CommentController {
     UserDetailService userDetailService;
     @Autowired
     IUserService userService;
+
     @GetMapping
-    public ResponseEntity<?> listComment(){
-        return new ResponseEntity<>(commentService.findAll(),HttpStatus.OK);
+    public ResponseEntity<?> listComment() {
+        return new ResponseEntity<>(commentService.findAll(), HttpStatus.OK);
     }
+
     @GetMapping("/{id}")
-    public ResponseEntity<?> detailComment(@PathVariable Long id){
+    public ResponseEntity<?> detailComment(@PathVariable Long id) {
         Optional<Comment> comment = commentService.findById(id);
-        if (!comment.isPresent()){
-            return new ResponseEntity<>(new ResponMessage("not_found"),HttpStatus.OK);
+        if (!comment.isPresent()) {
+            return new ResponseEntity<>(new ResponMessage("not_found"), HttpStatus.OK);
         }
-        return new ResponseEntity<>(comment,HttpStatus.OK);
+        return new ResponseEntity<>(comment, HttpStatus.OK);
     }
+
+    @GetMapping("/commentByStoryId/{id}")
+    public ResponseEntity<?> showListCommentByStoryId(@PathVariable Long id) {
+        List<Comment> commentList = commentService.getCommentByStoryId(id);
+        Collections.reverse(commentList);
+        return new ResponseEntity<>(commentList, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<?> createComment(@RequestBody CommentDTO commentDTO) {
-       Comment comment = new Comment(commentDTO.getStory(),commentDTO.getComment());
+        Comment comment = new Comment(commentDTO.getStory(), commentDTO.getComment());
         commentService.save(comment);
-        return new ResponseEntity<>(new ResponMessage("create_success"),HttpStatus.OK);
+        return new ResponseEntity<>(new ResponMessage("create_success"), HttpStatus.OK);
     }
+
     @GetMapping("/page")
-    public ResponseEntity<?> pageListComment(Pageable pageable){
+    public ResponseEntity<?> pageListComment(Pageable pageable) {
         return new ResponseEntity<>(commentService.findAll(pageable), HttpStatus.OK);
     }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteComment(@PathVariable Long id){
+    public ResponseEntity<?> deleteComment(@PathVariable Long id) {
         User user = userDetailService.getCurrentUser();
-        if (user.getId() == null){
-            return new ResponseEntity<>(new ResponMessage("no_user"),HttpStatus.OK);
+        if (user.getId() == null) {
+            return new ResponseEntity<>(new ResponMessage("no_user"), HttpStatus.OK);
         }
         Optional<Comment> comment = commentService.findById(id);
-        if (!comment.isPresent()){
-            return new ResponseEntity<>(new ResponMessage("not_found"),HttpStatus.OK);
+        if (!comment.isPresent()) {
+            return new ResponseEntity<>(new ResponMessage("not_found"), HttpStatus.OK);
         }
-        if (!user.getId().equals(comment.get().getUser().getId())){
-            return new ResponseEntity<>(new ResponMessage("not_accept"),HttpStatus.OK);
+        if (!user.getId().equals(comment.get().getUser().getId())) {
+            return new ResponseEntity<>(new ResponMessage("not_accept"), HttpStatus.OK);
         }
-            commentService.deleteById(id);
-            return new ResponseEntity<>(new ResponMessage("delete_success"),HttpStatus.OK);
+        commentService.deleteById(id);
+        return new ResponseEntity<>(new ResponMessage("delete_success"), HttpStatus.OK);
     }
 
     @DeleteMapping("/admin/{id}")
-    public ResponseEntity<?> deleteAdminComment(@PathVariable Long id){
+    public ResponseEntity<?> deleteAdminComment(@PathVariable Long id) {
         String role = "";
         User user = userDetailService.getCurrentUser();
         role = userService.getUserRole(user);
-        if (user.getId() == null){
-            return new ResponseEntity<>(new ResponMessage("no_user"),HttpStatus.OK);
+        if (user.getId() == null) {
+            return new ResponseEntity<>(new ResponMessage("no_user"), HttpStatus.OK);
         }
-        if (!role.equals("ADMIN")){
-            return new ResponseEntity<>(new ResponMessage("access_denied"),HttpStatus.OK);
+        if (!role.equals("ADMIN")) {
+            return new ResponseEntity<>(new ResponMessage("access_denied"), HttpStatus.OK);
         }
 
         Optional<Comment> comment = commentService.findById(id);
-        if (!comment.isPresent()){
-            return new ResponseEntity<>(new ResponMessage("not_found"),HttpStatus.OK);
+        if (!comment.isPresent()) {
+            return new ResponseEntity<>(new ResponMessage("not_found"), HttpStatus.OK);
         }
         commentService.deleteById(id);
-        return new ResponseEntity<>(new ResponMessage("delete_success"),HttpStatus.OK);
+        return new ResponseEntity<>(new ResponMessage("delete_success"), HttpStatus.OK);
     }
 }
