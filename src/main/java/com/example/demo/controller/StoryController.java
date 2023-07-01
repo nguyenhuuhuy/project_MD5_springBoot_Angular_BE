@@ -27,19 +27,24 @@ public class StoryController {
     private UserDetailService userDetailService;
     @Autowired
     private IUserService userService;
+
     @GetMapping
     public ResponseEntity<?> showListStory() {
-        return new ResponseEntity<>(storyService.findAll(), HttpStatus.OK);
+        List<Story> storyList = storyService.findAll();
+        Collections.reverse(storyList);
+        return new ResponseEntity<>(storyList, HttpStatus.OK);
     }
 
     @GetMapping("/page")
     public ResponseEntity<?> pageListStory(@PageableDefault(size = 5) Pageable pageable) {
         return new ResponseEntity<>(storyService.findAll(pageable), HttpStatus.OK);
     }
+
     @GetMapping("/storyTop")
-    public ResponseEntity<?> topListStory(){
-        return new ResponseEntity<>(storyService.findTop10ByOrderByTotalView(),HttpStatus.OK);
+    public ResponseEntity<?> topListStory() {
+        return new ResponseEntity<>(storyService.findTop10ByOrderByTotalView(), HttpStatus.OK);
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> detailStory(@PathVariable Long id) {
         Optional<Story> story = storyService.findById(id);
@@ -48,11 +53,12 @@ public class StoryController {
         }
         return new ResponseEntity<>(story, HttpStatus.OK);
     }
+
     @GetMapping("/random")
-    public ResponseEntity<?> randomStory(){
+    public ResponseEntity<?> randomStory() {
         Set<Story> storySet = storyService.storyList();
         List<Story> storyList = new ArrayList<>(storySet);
-        return new ResponseEntity<>(storyList,HttpStatus.OK);
+        return new ResponseEntity<>(storyList, HttpStatus.OK);
     }
 
     @PostMapping
@@ -60,8 +66,8 @@ public class StoryController {
         String role = "";
         User user = userDetailService.getCurrentUser();
         role = userService.getUserRole(user);
-        if (!role.equals("ADMIN")){
-            return new ResponseEntity<>(new ResponMessage("access_denied"),HttpStatus.OK);
+        if (!role.equals("ADMIN")) {
+            return new ResponseEntity<>(new ResponMessage("access_denied"), HttpStatus.OK);
         }
         Story story = new Story(storyDTO.getName(), storyDTO.getImage(), storyDTO.getContent(), storyDTO.getAuthor(), storyDTO.getCategoryList());
         if (storyService.existsByName(story.getName())) {
@@ -77,8 +83,8 @@ public class StoryController {
         String role = "";
         User user = userDetailService.getCurrentUser();
         role = userService.getUserRole(user);
-        if (!role.equals("ADMIN")){
-            return new ResponseEntity<>(new ResponMessage("access_denied"),HttpStatus.OK);
+        if (!role.equals("ADMIN")) {
+            return new ResponseEntity<>(new ResponMessage("access_denied"), HttpStatus.OK);
         }
         Optional<Story> story = storyService.findById(id);
         if (!story.isPresent()) {
@@ -93,8 +99,8 @@ public class StoryController {
         String role = "";
         User user = userDetailService.getCurrentUser();
         role = userService.getUserRole(user);
-        if (!role.equals("ADMIN")){
-            return new ResponseEntity<>(new ResponMessage("access_denied"),HttpStatus.OK);
+        if (!role.equals("ADMIN")) {
+            return new ResponseEntity<>(new ResponMessage("access_denied"), HttpStatus.OK);
         }
         Optional<Story> story = storyService.findById(id);
         if (!story.isPresent()) {
@@ -120,39 +126,39 @@ public class StoryController {
     }
 
     @GetMapping("/storyByCategory/{id}")
-    public ResponseEntity<?> storyFindByCategory(@PathVariable Long id){
+    public ResponseEntity<?> storyFindByCategory(@PathVariable Long id) {
         List<Story> storyList = storyService.findStoryByCategoryId(id);
-        return new ResponseEntity<>(storyList,HttpStatus.OK);
+        return new ResponseEntity<>(storyList, HttpStatus.OK);
     }
 
-    @GetMapping ("block-story/{id}")
-    public ResponseEntity<?> blockStory(@PathVariable Long id){
+    @GetMapping("block-story/{id}")
+    public ResponseEntity<?> blockStory(@PathVariable Long id) {
         String role = "";
         User user = userDetailService.getCurrentUser();
         role = userService.getUserRole(user);
-        if (!role.equals("ADMIN")){
-            return new ResponseEntity<>(new ResponMessage("access_denied"),HttpStatus.OK);
+        if (!role.equals("ADMIN")) {
+            return new ResponseEntity<>(new ResponMessage("access_denied"), HttpStatus.OK);
         }
         Optional<Story> story = storyService.findById(id);
-        if (!story.isPresent()){
-            return new ResponseEntity<>(new ResponMessage("no_found"),HttpStatus.OK);
+        if (!story.isPresent()) {
+            return new ResponseEntity<>(new ResponMessage("no_found"), HttpStatus.OK);
         }
-        if (story.get().getStatus()){
+        if (story.get().getStatus()) {
             story.get().setStatus(false);
             storyService.saveViews(story.get());
-            return new ResponseEntity<>(new ResponMessage("un_block_success"),HttpStatus.OK);
+            return new ResponseEntity<>(new ResponMessage("un_block_success"), HttpStatus.OK);
         }
         story.get().setStatus(true);
         storyService.saveViews(story.get());
-        return new ResponseEntity<>(new ResponMessage("block_success"),HttpStatus.OK);
+        return new ResponseEntity<>(new ResponMessage("block_success"), HttpStatus.OK);
     }
 
     @GetMapping("/search/{search}")
-    public ResponseEntity<?> getListSearchBandByName(@PathVariable String search){
+    public ResponseEntity<?> getListSearchBandByName(@PathVariable String search) {
         List<Story> story = storyService.findByNameContaining(search);
-        if (story.isEmpty()){
-            return new ResponseEntity<>(new ResponMessage("not_found"),HttpStatus.OK);
+        if (story.isEmpty()) {
+            return new ResponseEntity<>(new ResponMessage("not_found"), HttpStatus.OK);
         }
-        return new ResponseEntity<>(story,HttpStatus.OK);
+        return new ResponseEntity<>(story, HttpStatus.OK);
     }
 }
